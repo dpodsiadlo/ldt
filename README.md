@@ -31,6 +31,12 @@ protected $middleware = [
 ```
 
 
+You might also want to change the default (1800) port for external debugger (in `.env`): 
+```
+LDT_DEBUG_PORT=1801
+```
+
+
 ### Basic Usage
 
 Use default Laravel Log Facade that provides access to the Monolog Writter.  
@@ -51,6 +57,11 @@ Log::debug($error);
 
 ```
 
+
+### External Debugger
+
+LDT is compatible with [LDT Console](https://chrome.google.com/webstore/detail/ldt-console/icopnphbbahdenofbalbonlkclmfaoio) - Free Chrome App.
+
 ### License
 
-The MIT License (MIT). Please see [License File](https://github.com/dlpodsiadlo/debug/blob/master/LICENSE) for more information.
+The MIT License (MIT). Please see [License File](https://github.com/dpodsiadlo/ldt/blob/master/LICENSE) for more information.
