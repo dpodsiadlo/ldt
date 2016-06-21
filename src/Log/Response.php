@@ -17,9 +17,9 @@ class Response implements JsonSerializable
      * @param mixed $body
      * @param mixed $headers
      */
-    public function __construct(\Illuminate\Http\Response $response)
+    public function __construct(\Symfony\Component\HttpFoundation\Response $response)
     {
-        $this->body = $response->content();
+        $this->body = $response->getContent();
         $this->headers = $response->headers->all();
         $this->status = $response->getStatusCode();
     }
