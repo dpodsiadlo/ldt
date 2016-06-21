@@ -1,6 +1,12 @@
 {
   "name": "dpodsiadlo/ldt",
   "description": "Debug Tools for Laravel",
+  "keywords": [
+    "laravel",
+    "debug",
+    "tools",
+    "monolog"
+  ],
   "type": "library",
   "license": "MIT",
   "require": {

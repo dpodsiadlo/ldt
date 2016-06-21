@@ -1,6 +1,6 @@
 # LDT - Debug Tools for Laravel 
 
-A package that extends Monolog and throws debug data to external debugger. 
+A package that extends Monolog and throws debug data to an external debugger. 
 
 ## Installation
 
@@ -25,8 +25,8 @@ Also add a middleware for logging requests and responses, in your `app/Http/Kern
 
 ```php
 protected $middleware = [
-        ...
-        \DPodsiadlo\Middleware\LogSender::class,        
+    ...
+    \DPodsiadlo\Middleware\LogSender::class,        
 ];
 ```
 
