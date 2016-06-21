@@ -15,10 +15,10 @@ $ composer require dpodsiadlo/ldt
 Once installed, register Laravel service provider, in your `config/app.php`:
 
 ```php
-'providers' => array(
+'providers' => [
 	...
     DPodsiadlo\Providers\LDTServiceProvider::class,
-)
+]
 ```
 
 Also register a middleware for logging requests and responses, in your `app/Http/Kernel.php`:
