@@ -23,7 +23,7 @@ Once installed, register Laravel service provider, in your `config/app.php`:
 
 Also register a middleware for logging requests and responses, in your `app/Http/Kernel.php`:
 
-```phpIlluminate\Database\Events\QueryExecuted
+```php
 protected $middleware = [
     ...
     \DPodsiadlo\LDT\Middleware\LogSender::class,        
