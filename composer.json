@@ -10,10 +10,10 @@
   "type": "library",
   "license": "MIT",
   "require": {
-    "php": "^5.6",
-    "illuminate/http": "^5.2",
-    "illuminate/support": "^5.2",
-    "illuminate/database": "^5.2",
+    "php": ">=5.6",
+    "illuminate/http": ">=5.2",
+    "illuminate/support": ">=5.2",
+    "illuminate/database": ">=5.2",
     "monolog/monolog": ">=1.19",
     "symfony/http-foundation": ">=3.0"
   },
