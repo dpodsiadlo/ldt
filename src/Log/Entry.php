@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DPodsiadlo\Log;
+namespace DPodsiadlo\LDT\Log;
 
 use JsonSerializable;
 

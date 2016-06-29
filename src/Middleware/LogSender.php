@@ -1,8 +1,8 @@
 <?php
-namespace DPodsiadlo\Middleware;
+namespace DPodsiadlo\LDT\Middleware;
 
 use Closure;
-use DPodsiadlo\Facades\LDT;
+use DPodsiadlo\LDT\Facades\LDT;
 
 
 class LogSender

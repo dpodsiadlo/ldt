@@ -1,8 +1,8 @@
 <?php
 
-namespace DPodsiadlo\Handlers;
+namespace DPodsiadlo\LDT\Handlers;
 
-use DPodsiadlo\Facades\LDT;
+use DPodsiadlo\LDT\Facades\LDT;
 use Monolog\Logger;
 use Monolog\Handler\AbstractProcessingHandler;
 

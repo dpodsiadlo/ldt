@@ -1,7 +1,7 @@
 <?php
 
 
-namespace DPodsiadlo\Facades;
+namespace DPodsiadlo\LDT\Facades;
 
 
 
@@ -11,6 +11,6 @@ class LDT extends Facade
 {
     protected static function getFacadeAccessor()
     {
-        return \DPodsiadlo\LDT::class;
+        return \DPodsiadlo\LDT\LDT::class;
     }
 }

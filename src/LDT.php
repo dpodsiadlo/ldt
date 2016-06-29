@@ -1,12 +1,13 @@
 <?php
 
 
-namespace DPodsiadlo;
+namespace DPodsiadlo\LDT;
 
 use App;
-use DPodsiadlo\Log\Entry;
-use DPodsiadlo\Log\Request;
-use DPodsiadlo\Log\Response;
+use DPodsiadlo\LDT\Log\Entry;
+use DPodsiadlo\LDT\Log\Query;
+use DPodsiadlo\LDT\Log\Request;
+use DPodsiadlo\LDT\Log\Response;
 use Exception;
 
 
@@ -23,6 +24,7 @@ class LDT
     private $entries = [];
     private $startTime = null;
     private $executionTime = 0;
+    private $queries = [];
 
 
     private $sent = false;
@@ -58,7 +60,7 @@ class LDT
     public function send()
     {
         $this->sent = true;
-        
+
         $this->executionTime = microtime(true) - $this->startTime;
 
         try {
@@ -107,6 +109,7 @@ class LDT
     {
         $res = [
             'entries' => $this->entries,
+            'queries' => $this->queries,
             'memoryPeakUsage' => memory_get_peak_usage(),
             'executionTime' => $this->executionTime,
             'php' => [
@@ -184,6 +187,12 @@ class LDT
     public function response($response)
     {
         $this->response = new Response($response);
+    }
+
+
+    public function query(\Illuminate\Database\Events\QueryExecuted $query)
+    {
+        array_unshift($this->queries, new Query($query));
     }
 
 

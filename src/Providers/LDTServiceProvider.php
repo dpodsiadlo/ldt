@@ -1,12 +1,12 @@
 <?php
 
-namespace DPodsiadlo\Providers;
+namespace DPodsiadlo\LDT\Providers;
 
 use Log;
-use DPodsiadlo\LDT;
-use DPodsiadlo\Handlers\LDTHandler;
+use DPodsiadlo\LDT\LDT;
+use DPodsiadlo\LDT\Handlers\LDTHandler;
 use Illuminate\Support\ServiceProvider;
-use Monolog\Logger;
+use Illuminate\Support\Facades\DB;
 
 class LDTServiceProvider extends ServiceProvider
 {
@@ -21,7 +21,9 @@ class LDTServiceProvider extends ServiceProvider
         $monolog = Log::getMonolog();
         $monolog->pushHandler(new LDTHandler());
 
-
+        DB::listen(function ($query) {
+            \DPodsiadlo\LDT\Facades\LDT::query($query);
+        });
     }
 
     public function register()

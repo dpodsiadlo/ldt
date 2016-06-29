@@ -17,16 +17,16 @@ Once installed, register Laravel service provider, in your `config/app.php`:
 ```php
 'providers' => [
 	...
-    DPodsiadlo\Providers\LDTServiceProvider::class,
+    DPodsiadlo\LDT\Providers\LDTServiceProvider::class,
 ]
 ```
 
 Also register a middleware for logging requests and responses, in your `app/Http/Kernel.php`:
 
-```php
+```phpIlluminate\Database\Events\QueryExecuted
 protected $middleware = [
     ...
-    \DPodsiadlo\Middleware\LogSender::class,        
+    \DPodsiadlo\LDT\Middleware\LogSender::class,        
 ];
 ```
 
