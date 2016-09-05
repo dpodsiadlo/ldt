@@ -57,6 +57,51 @@ Log::debug($error);
 
 ```
 
+### Custom requests
+
+Here is an example how to log a separate custom request with response, it might be helpful for debugging third party APIs: 
+
+```php
+use DPodsiadlo\LDT\LDT;
+use DPodsiadlo\LDT\Log\Request;
+use DPodsiadlo\LDT\Log\Response;
+
+...
+
+$params = ["param1" => "someValue"];
+$targetUrl = "https://third-party-service.com";
+
+$context = stream_context_create([
+        'http' => [
+            'header' => "Accept: */*\r\nContent-Type: application/json\r\nUser-Agent: API-WRAPER/1.0\r\n",
+            'method' => "POST",
+            'content' => json_encode($params),
+            'ignore_errors' => true
+        ]
+    ]);
+
+
+$res = file_get_contents($targetUrl, false, $context);
+
+
+if (!empty($http_response_header)) {
+
+    $status = (int)explode(' ', $http_response_header[0])[1];
+
+    LDT::Log(new Request($targetUrl, "POST", $params), new Response($res, $status, $http_response_header]), true);
+}
+
+```
+
+
+### Remote debugging 
+
+You might also want to debug a remote instance of your project. To do that please use SSH client with port forwarding enabled:
+
+```bash
+ssh me@some-server.com -R 1800:localhost:1800
+```
+ 
 
 ### External Debugger
 

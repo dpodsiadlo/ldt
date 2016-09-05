@@ -17,11 +17,47 @@ class Response implements JsonSerializable
      * @param mixed $body
      * @param mixed $headers
      */
-    public function __construct(\Symfony\Component\HttpFoundation\Response $response)
+    public function __construct($response, $status = 200, $headers = [])
     {
-        $this->body = $response->getContent();
-        $this->headers = $response->headers->all();
-        $this->status = $response->getStatusCode();
+
+        if (is_a($response, \Symfony\Component\HttpFoundation\Response::class)) {
+            $this->body = $response->getContent();
+            $this->headers = $response->headers->all();
+            $this->status = $response->getStatusCode();
+        } elseif (is_array($response)) {
+            $this->headers = @$response['headers'];
+            $this->body = @$response['body'];
+            $this->status = @$response['status'];
+        } else {
+            $this->body = $response;
+            $this->status = $status;
+
+            if (is_array($headers)) {
+                foreach ($headers as $key => $header) {
+                    if (is_numeric($key)) {
+                        $header = explode(' ', $header);
+                        $id = strtolower($header[0]);
+
+                        array_shift($header);
+                        switch ($id) {
+                            case "http/1.0":
+                            case "http/1.1":
+                            case "http/2.0":
+
+                                break;
+                            default:
+                                $this->headers[$id] = $header;
+                        }
+
+
+                    } else {
+                        $this->headers[$key] = $header;
+                    }
+                }
+            }
+
+        }
+
     }
 
     /**

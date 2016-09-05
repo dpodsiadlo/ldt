@@ -17,21 +17,41 @@ class Request implements JsonSerializable
 
     /**
      * Request constructor.
+     * @param \Illuminate\Http\Request|array|string $request
+     * @param null|string $method
+     * @param array $parameters
+     * @param array $headers
+     * @param array $cookies
      */
-    public function __construct(\Illuminate\Http\Request $request)
+    public function __construct($request, $method = null, $parameters = [], $headers = [], $cookies = [])
     {
 
+        if (is_a($request, \Illuminate\Http\Request::class)) {
+            $this->method = $request->method();
+            $this->url = $request->url();
+            $this->httpVersion = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : "";
+            $this->headers = $request->headers->all();
+            $this->cookies = $request->cookies->all();
+            $this->clientIps = $request->getClientIps();
+            $this->parameters = $request->all();
 
-        $this->method = $request->method();
-        $this->url = $request->url();
-        $this->httpVersion = isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : "";
+        } elseif (is_array($request)) {
 
+            $this->method = @$request['method'];
+            $this->url = @$request['url'];
+            $this->httpVersion = @$request['httpVersion'];
+            $this->cookies = @$request['cookies'];
+            $this->headers = @$request['headers'];
+            $this->parameters = @$request['parameters'];
+            $this->clientIps = @$request['clientIps'];
 
-        $this->headers = $request->headers->all();
-        $this->cookies = $request->cookies->all();
-        $this->clientIps = $request->getClientIps();
-        $this->parameters = $request->all();
-
+        } elseif (is_string($request)) {
+            $this->url = $request;
+            $this->method = $method;
+            $this->parameters = $parameters;
+            $this->headers = $headers;
+            $this->cookies = $cookies;
+        }
     }
 
     /**

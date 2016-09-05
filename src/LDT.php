@@ -184,7 +184,7 @@ class LDT
      * @param mixed $body
      * @param mixed $headers
      */
-    public function response($response)
+    public function response(&$response)
     {
         $this->response = new Response($response);
     }
@@ -196,10 +196,29 @@ class LDT
     }
 
 
-    public function request($request)
+    public function request(&$request)
     {
         $this->request = new Request($request);
     }
 
+
+    /**
+     * @param null $request
+     * @param null $response
+     * @param bool $send
+     * @return LDT
+     */
+    public static function Log($request = null, $response = null, $send = false)
+    {
+        $log = new LDT();
+
+        $log->request = $request;
+        $log->response = $response;
+        
+        if ($send)
+            $log->send();
+
+        return $log;
+    }
 
 }
