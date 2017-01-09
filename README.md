@@ -88,11 +88,49 @@ if (!empty($http_response_header)) {
 
     $status = (int)explode(' ', $http_response_header[0])[1];
 
-    LDT::Log(new Request($targetUrl, "POST", $params), new Response($res, $status, $http_response_header]), true);
+    LDT::log(new Request($targetUrl, "POST", $params), new Response($res, $status, $http_response_header]), true);
 }
 
 ```
 
+
+##### Custom storage
+
+Also it's possible to store the custom log to a separate log file:
+
+```php
+use DPodsiadlo\LDT\LDT;
+use DPodsiadlo\LDT\Log\Request;
+use DPodsiadlo\LDT\Log\Response;
+
+...
+
+$params = ["param1" => "someValue"];
+$targetUrl = "https://third-party-service.com";
+
+$context = stream_context_create([
+        'http' => [
+            'header' => "Accept: */*\r\nContent-Type: application/json\r\nUser-Agent: API-WRAPER/1.0\r\n",
+            'method' => "POST",
+            'content' => json_encode($params),
+            'ignore_errors' => true
+        ]
+    ]);
+
+
+$res = file_get_contents($targetUrl, false, $context);
+
+
+if (!empty($http_response_header)) {
+
+    $status = (int)explode(' ', $http_response_header[0])[1];
+
+    LDT::log(new Request($targetUrl, "POST", $params), new Response($res, $status, $http_response_header]), true, "third-party-log");
+}
+
+```
+
+Log file name will be generated automatically based on `$storage` parameter and Laravel`app.log` config. 
 
 ### Remote debugging 
 

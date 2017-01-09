@@ -71,6 +71,11 @@ class Request implements JsonSerializable
     }
 
 
+    public function getName()
+    {
+        return $this->method . " " . $this->url;
+    }
+
     public function jsonSerialize()
     {
         return $this->toArray();

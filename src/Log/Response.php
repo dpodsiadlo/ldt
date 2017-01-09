@@ -58,6 +58,15 @@ class Response implements JsonSerializable
 
         }
 
+
+        if ($this->isJSON() && is_string($this->body)) {
+            try {
+                $this->body = json_decode($this->body, true);
+            } catch (\Exception $ex) {
+
+            }
+        }
+
     }
 
     /**
@@ -82,5 +91,10 @@ class Response implements JsonSerializable
     public function jsonSerialize()
     {
         return $this->toArray();
+    }
+
+    public function isJSON()
+    {
+        return is_array($this->headers["content-type"]) && in_array("application/json", $this->headers["content-type"]);
     }
 }

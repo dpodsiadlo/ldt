@@ -18,8 +18,16 @@ use Exception;
 class LDT
 {
 
+    const LOG_STORAGE_DAILY = "daily";
+    const LOG_STORAGE_SINGLE = "single";
 
+    /**
+     * @var Request $request
+     */
     private $request = null;
+    /**
+     * @var Response $response
+     */
     private $response = null;
     private $entries = [];
     private $startTime = null;
@@ -65,14 +73,14 @@ class LDT
 
         try {
 
-            $fp = fsockopen("127.0.0.1", env('LDT_DEBUG_PORT', 1800));
+            $socket = fsockopen("127.0.0.1", env('LDT_DEBUG_PORT', 1800));
 
-            if ($fp !== false) {
+            if ($socket !== false) {
 
                 $res = (string)$this;
 
-                fwrite($fp, $res, strlen($res));
-                fclose($fp);
+                fwrite($socket, $res, strlen($res));
+                fclose($socket);
 
                 return true;
             }
@@ -88,6 +96,29 @@ class LDT
 
     }
 
+    public function store($storage)
+    {
+        switch (config('app.log', 'single')) {
+            case self::LOG_STORAGE_DAILY:
+                $logFileName = $storage . "-" . date("Y-m-d") . ".log";
+                break;
+            default:
+                $logFileName = $storage . ".log";
+
+        }
+
+        $logFile = fopen(storage_path("logs/" . $logFileName), "a");
+
+        if ($logFile) {
+
+            fputs($logFile, "[" . date("Y-m-d h:i:s") . "] " . $this->getName() . "\n");
+
+            fputs($logFile, $this->toString(true) . "\n");
+
+            fclose($logFile);
+        }
+    }
+
 
     public function __destruct()
     {
@@ -98,7 +129,17 @@ class LDT
 
     public function __toString()
     {
-        return (string)json_encode($this->toArray());
+        return $this->toString();
+    }
+
+    public function toString($prettyPrint = false)
+    {
+        return (string)json_encode($this->toArray(), $prettyPrint ? JSON_PRETTY_PRINT : 0);
+    }
+
+    public function getName()
+    {
+        return !empty($this->request) ? $this->request->getName() : "cli";
     }
 
 
@@ -120,10 +161,10 @@ class LDT
         ];
 
         if (null !== $this->request) {
-            $res['request'] = $this->request;
+            $res['request'] = $this->request->toArray();
         }
         if (null !== $this->response) {
-            $res['response'] = $this->response;
+            $res['response'] = $this->response->toArray();
         }
 
         return $res;
@@ -206,17 +247,25 @@ class LDT
      * @param null $request
      * @param null $response
      * @param bool $send
+     * @param null $storage
      * @return LDT
      */
-    public static function Log($request = null, $response = null, $send = false)
+    public function log($request = null, $response = null, $send = false, $storage = null)
     {
         $log = new LDT();
 
         $log->request = $request;
         $log->response = $response;
-        
+
         if ($send)
             $log->send();
+
+
+        if (!empty($storage)) {
+            $log->store($storage);
+
+        }
+
 
         return $log;
     }
