@@ -130,7 +130,7 @@ if (!empty($http_response_header)) {
 
 ```
 
-Log file name will be generated automatically based on `$storage` parameter and Laravel`app.log` config. 
+Log file name will be generated automatically based on `$storage` parameter and Laravel `app.log` config. By default log will be generated in `single` mode. 
 
 ### Remote debugging 
 
