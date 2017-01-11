@@ -59,12 +59,13 @@ class Response implements JsonSerializable
         }
 
 
-        if ($this->isJSON() && is_string($this->body)) {
-            try {
-                $this->body = json_decode($this->body, true);
-            } catch (\Exception $ex) {
+        if ($this->isJSON() && !empty($this->body) && is_string($this->body)) {
 
-            }
+            $decoded = json_decode($this->body, true);
+
+            if (!empty($decoded))
+                $this->body = $decoded;
+
         }
 
     }
